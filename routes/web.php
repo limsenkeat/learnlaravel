@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    
     return view('welcome');
 });
 
@@ -37,3 +38,18 @@ Route::get('/contact', 'PostsController@contact');
 
 Route::get('/posts/{id}/{name}', 'PostsController@showPost');
 
+Route::get('/insert', function () {
+    
+    DB::insert('INSERT INTO posts (title, content) value(?, ?)', ['PHP Laravel', 'Learning Laravel now.']);
+
+});
+
+Route::get('/read', function () {
+    
+    $results = DB::select('SELECT * FROM posts WHERE id = ?', [1]);
+
+    foreach($results as $post){
+        return $post->title;
+    }
+
+});
