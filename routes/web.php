@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Post;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,10 +47,67 @@ Route::get('/insert', function () {
 
 Route::get('/read', function () {
     
-    $results = DB::select('SELECT * FROM posts WHERE id = ?', [1]);
+    // $results = DB::select('SELECT * FROM posts WHERE id = ?', [1]);
+    $results = Post::all();
 
     foreach($results as $post){
         return $post->title;
     }
+
+});
+
+Route::get('/basicinsert', function () {
+    
+    $post = new Post;
+    // $post = Post::find(2);
+
+    $post->title = 'New Title 2';
+    $post->content = 'New content sasd asd asd 2';
+    $post->save();
+
+});
+
+Route::get('/create', function () {
+    
+    Post::create(['title' => 'this is title', 'content' => 'this is content']);
+
+});
+
+Route::get('/update', function () {
+    
+    Post::where('id', 2)->where('is_admin', 0)->update(['title' => 'updated title', 'content' => 'updated content']);
+
+});
+
+Route::get('/delete', function () {
+    
+    // $post = Post::find(4);
+    // $post->delete();
+
+    Post::destroy(5);
+
+});
+
+Route::get('/softdelete', function () {
+
+    Post::find(2)->delete();
+
+});
+
+Route::get('/readsoftdelete', function () {
+
+    return Post::onlyTrashed()->where('is_admin', 0)->get();
+
+});
+
+Route::get('/restore', function () {
+
+    Post::withTrashed()->where('is_admin', 0)->restore();
+
+});
+
+Route::get('/forcedelete', function () {
+
+    Post::onlyTrashed()->where('is_admin', 0)->forceDelete();
 
 });
