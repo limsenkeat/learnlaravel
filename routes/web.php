@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Post;
 use App\User;
+use App\Country;
 
 /*
 |--------------------------------------------------------------------------
@@ -160,6 +161,51 @@ Route::get('/user/{id}/role', function ($id) {
 
     foreach($user->roles as $role){
         echo $role->name;
+    }
+    
+});
+
+//accessing Intermediate table
+Route::get('/user/pivot', function () {
+
+    $user = User::find(1);
+
+    foreach($user->roles as $role){
+        echo $role->pivot->created_at;
+    }
+    
+});
+
+//has many through relations
+Route::get('/user/country', function () {
+
+    //get post by user country
+    $country = Country::find(3);
+
+    foreach($country->posts as $post){
+        echo $post->title;
+    }
+    
+});
+
+//polymorphic relationship
+Route::get('/user/photos', function () {
+
+    //get post by user country
+    $user = User::find(1);
+
+    foreach($user->photos as $photo){
+        echo $photo;
+    }
+    
+});
+Route::get('/post/photos', function () {
+
+    //get post by user country
+    $post = Post::find(1);
+
+    foreach($post->photos as $photo){
+        echo $photo;
     }
     
 });
