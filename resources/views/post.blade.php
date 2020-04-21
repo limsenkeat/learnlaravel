@@ -5,3 +5,9 @@
 <h1>Post {{$id}} {{$name}}</h1>
 
 @endsection
+
+@section('footer')
+
+<footer>Footer</footer>
+
+@endsection
