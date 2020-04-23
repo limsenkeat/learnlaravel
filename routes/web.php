@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Post;
 use App\User;
 use App\Country;
+Use App\Photo;
+Use App\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -188,7 +190,7 @@ Route::get('/user/country', function () {
     
 });
 
-//polymorphic relationship
+//polymorphic one to many relationship
 Route::get('/user/photos', function () {
 
     //get post by user country
@@ -201,11 +203,43 @@ Route::get('/user/photos', function () {
 });
 Route::get('/post/photos', function () {
 
-    //get post by user country
+    //get photo by post id 1
     $post = Post::find(1);
 
     foreach($post->photos as $photo){
         echo $photo;
+    }
+    
+});
+
+//polymorphic reverse relationship
+Route::get('/photo/{id}/post', function ($id) {
+
+    $photo = Photo::findOrFail($id);
+
+    echo $photo->imageable;
+    
+});
+
+//polymorphic many to many relationship
+Route::get('/post/tag', function () {
+
+    //find tag by post id 1
+    $post = Post::find(1);
+
+    foreach($post->tags as $tag){
+        echo $tag->name."<br>";
+    }
+    
+});
+
+Route::get('/tag/post', function () {
+
+    //find tag by post id 1
+    $tag = Tag::find(2);
+
+    foreach($tag->posts as $post){
+        echo $post->title."<br>";
     }
     
 });
