@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Post;
 use App\User;
+use App\Role;
 use App\Country;
 Use App\Photo;
+Use App\Video;
 Use App\Tag;
 
 /*
@@ -242,4 +244,67 @@ Route::get('/tag/post', function () {
         echo $post->title."<br>";
     }
     
+});
+
+//Eloquent polymorphic one to many insert
+Route::get('/insert2', function () {
+
+    $post = Post::find(1);
+    $post->photos()->create(['path' => 'sample.jpg']);
+    
+});
+//save with object
+Route::get('/insert3', function () {
+
+    $post = Post::find(1);
+    $photos = Photo::find(4);
+    $post->photos()->save($photos);
+    
+});
+//unassign 
+Route::get('/unassign', function () {
+    
+    $post = Post::find(1);
+    $post->photos()->whereId(4)->update(['imageable_id' => '', 'imageable_type' => '']);
+    
+});
+
+//Eloquent polymorphic many to many insert
+Route::get('/insert4', function () {
+    
+    //insert new post and tag
+    $post = Post::create([
+        'title' => 'Insert 4', 
+        'content' => 'Insert 4 content'
+    ]);
+    $tag1 = Tag::find(1);
+    $post->tags()->save($tag1);
+
+    //insert new video and tag
+    $video = Video::create([
+        'name' => 'Video 4'
+    ]);
+    $tag2 = Tag::find(2);
+    $video->tags()->save($tag2);
+    
+});
+//attach
+Route::get('/attach', function () {
+    
+    //assign tag 2 to post 4
+    $post = Post::find(4);
+    $post->tags()->attach(2);
+
+});
+
+//Eloquent polymorphic many to many delete
+Route::get('/delete2', function () {
+    
+    //delete tag 2
+    $post = Post::find(4);
+    
+    foreach($post->tags as $tag){
+        $tag->whereId(2)->delete(); //delete tag 2
+    }
+
 });
