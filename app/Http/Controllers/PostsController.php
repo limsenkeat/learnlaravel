@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use Illuminate\Http\Request;
+
 
 class PostsController extends Controller
 {
@@ -11,9 +13,10 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
-        return "This is number ".$id;
+        $posts = Post::all();
+        return view('posts.index', compact('posts')); //views/posts/index.blade.php
     }
 
     /**
@@ -23,7 +26,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create'); //views/posts/create.blade.php
     }
 
     /**
@@ -34,7 +37,16 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        // method 1
+        // Post::create($request->all());
+
+        //methond 2
+        $post = new Post;
+        $post->title = $request->title;
+        $post->save();
+
+        return redirect('/posts');
     }
 
     /**
@@ -45,7 +57,8 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        return "This is show method ".$id;
+        $post = Post::findOrFail($id);
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -56,7 +69,8 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -68,7 +82,10 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $post->update($request->all());
+
+        return redirect('/posts');
     }
 
     /**
@@ -79,7 +96,9 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Post::whereId($id)->delete();
+
+        return redirect('/posts');
     }
 
 

@@ -38,7 +38,7 @@ Route::get('/', function () {
 
 // Route::get('/posts/{id}', 'PostsController@index');
 
-// Route::resource('posts', 'PostsController');
+Route::resource('posts', 'PostsController');
 
 // Route::get('/contact', 'PostsController@contact');
 
@@ -133,178 +133,178 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 
-//one to one relationship
-Route::get('/user/{id}/post', function ($id) {
+// //one to one relationship
+// Route::get('/user/{id}/post', function ($id) {
 
-    return User::find($id)->post;
+//     return User::find($id)->post;
 
-});
+// });
 
-//one to one reverse relationship
-Route::get('/post/{id}/user', function ($id) {
+// //one to one reverse relationship
+// Route::get('/post/{id}/user', function ($id) {
 
-    return Post::find($id)->user->name;
+//     return Post::find($id)->user->name;
     
-});
+// });
 
-//one to many relationship
-Route::get('/posts', function () {
+// //one to many relationship
+// Route::get('/posts', function () {
 
-    $user = User::find(1);
+//     $user = User::find(1);
 
-    foreach($user->posts as $post){
-        echo $post->title;
-    }
+//     foreach($user->posts as $post){
+//         echo $post->title;
+//     }
     
-});
+// });
 
-//many to many relationship
-Route::get('/user/{id}/role', function ($id) {
+// //many to many relationship
+// Route::get('/user/{id}/role', function ($id) {
 
-    $user = User::find($id);
+//     $user = User::find($id);
 
-    foreach($user->roles as $role){
-        echo $role->name;
-    }
+//     foreach($user->roles as $role){
+//         echo $role->name;
+//     }
     
-});
+// });
 
-//accessing Intermediate table
-Route::get('/user/pivot', function () {
+// //accessing Intermediate table
+// Route::get('/user/pivot', function () {
 
-    $user = User::find(1);
+//     $user = User::find(1);
 
-    foreach($user->roles as $role){
-        echo $role->pivot->created_at;
-    }
+//     foreach($user->roles as $role){
+//         echo $role->pivot->created_at;
+//     }
     
-});
+// });
 
-//has many through relations
-Route::get('/user/country', function () {
+// //has many through relations
+// Route::get('/user/country', function () {
 
-    //get post by user country
-    $country = Country::find(3);
+//     //get post by user country
+//     $country = Country::find(3);
 
-    foreach($country->posts as $post){
-        echo $post->title;
-    }
+//     foreach($country->posts as $post){
+//         echo $post->title;
+//     }
     
-});
+// });
 
-//polymorphic one to many relationship
-Route::get('/user/photos', function () {
+// //polymorphic one to many relationship
+// Route::get('/user/photos', function () {
 
-    //get post by user country
-    $user = User::find(1);
+//     //get post by user country
+//     $user = User::find(1);
 
-    foreach($user->photos as $photo){
-        echo $photo;
-    }
+//     foreach($user->photos as $photo){
+//         echo $photo;
+//     }
     
-});
-Route::get('/post/photos', function () {
+// });
+// Route::get('/post/photos', function () {
 
-    //get photo by post id 1
-    $post = Post::find(1);
+//     //get photo by post id 1
+//     $post = Post::find(1);
 
-    foreach($post->photos as $photo){
-        echo $photo;
-    }
+//     foreach($post->photos as $photo){
+//         echo $photo;
+//     }
     
-});
+// });
 
-//polymorphic reverse relationship
-Route::get('/photo/{id}/post', function ($id) {
+// //polymorphic reverse relationship
+// Route::get('/photo/{id}/post', function ($id) {
 
-    $photo = Photo::findOrFail($id);
+//     $photo = Photo::findOrFail($id);
 
-    echo $photo->imageable;
+//     echo $photo->imageable;
     
-});
+// });
 
-//polymorphic many to many relationship
-Route::get('/post/tag', function () {
+// //polymorphic many to many relationship
+// Route::get('/post/tag', function () {
 
-    //find tag by post id 1
-    $post = Post::find(1);
+//     //find tag by post id 1
+//     $post = Post::find(1);
 
-    foreach($post->tags as $tag){
-        echo $tag->name."<br>";
-    }
+//     foreach($post->tags as $tag){
+//         echo $tag->name."<br>";
+//     }
     
-});
+// });
 
-Route::get('/tag/post', function () {
+// Route::get('/tag/post', function () {
 
-    //find tag by post id 1
-    $tag = Tag::find(2);
+//     //find tag by post id 1
+//     $tag = Tag::find(2);
 
-    foreach($tag->posts as $post){
-        echo $post->title."<br>";
-    }
+//     foreach($tag->posts as $post){
+//         echo $post->title."<br>";
+//     }
     
-});
+// });
 
-//Eloquent polymorphic one to many insert
-Route::get('/insert2', function () {
+// //Eloquent polymorphic one to many insert
+// Route::get('/insert2', function () {
 
-    $post = Post::find(1);
-    $post->photos()->create(['path' => 'sample.jpg']);
+//     $post = Post::find(1);
+//     $post->photos()->create(['path' => 'sample.jpg']);
     
-});
-//save with object
-Route::get('/insert3', function () {
+// });
+// //save with object
+// Route::get('/insert3', function () {
 
-    $post = Post::find(1);
-    $photos = Photo::find(4);
-    $post->photos()->save($photos);
+//     $post = Post::find(1);
+//     $photos = Photo::find(4);
+//     $post->photos()->save($photos);
     
-});
-//unassign 
-Route::get('/unassign', function () {
+// });
+// //unassign 
+// Route::get('/unassign', function () {
     
-    $post = Post::find(1);
-    $post->photos()->whereId(4)->update(['imageable_id' => '', 'imageable_type' => '']);
+//     $post = Post::find(1);
+//     $post->photos()->whereId(4)->update(['imageable_id' => '', 'imageable_type' => '']);
     
-});
+// });
 
-//Eloquent polymorphic many to many insert
-Route::get('/insert4', function () {
+// //Eloquent polymorphic many to many insert
+// Route::get('/insert4', function () {
     
-    //insert new post and tag
-    $post = Post::create([
-        'title' => 'Insert 4', 
-        'content' => 'Insert 4 content'
-    ]);
-    $tag1 = Tag::find(1);
-    $post->tags()->save($tag1);
+//     //insert new post and tag
+//     $post = Post::create([
+//         'title' => 'Insert 4', 
+//         'content' => 'Insert 4 content'
+//     ]);
+//     $tag1 = Tag::find(1);
+//     $post->tags()->save($tag1);
 
-    //insert new video and tag
-    $video = Video::create([
-        'name' => 'Video 4'
-    ]);
-    $tag2 = Tag::find(2);
-    $video->tags()->save($tag2);
+//     //insert new video and tag
+//     $video = Video::create([
+//         'name' => 'Video 4'
+//     ]);
+//     $tag2 = Tag::find(2);
+//     $video->tags()->save($tag2);
     
-});
-//attach
-Route::get('/attach', function () {
+// });
+// //attach
+// Route::get('/attach', function () {
     
-    //assign tag 2 to post 4
-    $post = Post::find(4);
-    $post->tags()->attach(2);
+//     //assign tag 2 to post 4
+//     $post = Post::find(4);
+//     $post->tags()->attach(2);
 
-});
+// });
 
-//Eloquent polymorphic many to many delete
-Route::get('/delete2', function () {
+// //Eloquent polymorphic many to many delete
+// Route::get('/delete2', function () {
     
-    //delete tag 2
-    $post = Post::find(4);
+//     //delete tag 2
+//     $post = Post::find(4);
     
-    foreach($post->tags as $tag){
-        $tag->whereId(2)->delete(); //delete tag 2
-    }
+//     foreach($post->tags as $tag){
+//         $tag->whereId(2)->delete(); //delete tag 2
+//     }
 
-});
+// });
