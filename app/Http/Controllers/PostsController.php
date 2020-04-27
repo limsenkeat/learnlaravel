@@ -16,7 +16,8 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        // $posts = Post::all();
+        $posts = Post::idFirst()->get(); //with query scope from model
         return view('posts.index', compact('posts')); //views/posts/index.blade.php
     }
 
@@ -123,4 +124,5 @@ class PostsController extends Controller
         return view('post', compact('id', 'name'));
 
     }
+
 }

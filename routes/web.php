@@ -8,6 +8,7 @@ use App\Country;
 Use App\Photo;
 Use App\Video;
 Use App\Tag;
+Use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,13 +39,48 @@ Route::get('/', function () {
 
 // Route::get('/posts/{id}', 'PostsController@index');
 
-Route::group(['middleware' => 'web'], function(){
+// if u using custom route instead of web.php, please wrap this middleware in all route for security purpose.
+// by default web middleware already included in web  route
+// Route::group(['middleware' => 'web'], function(){
     Route::resource('posts', 'PostsController');
-});
+// });
 
 // Route::get('/contact', 'PostsController@contact');
 
 // Route::get('/posts/{id}/{name}', 'PostsController@showPost');
+
+//Carbon date time 
+Route::get('/dates', function () {
+    
+    $date = new DateTime('+1 week');
+    echo $date->format('Y-m-d').'<br>';
+
+    echo Carbon::now()->addDays(10)->diffForHumans().'<br>';
+
+    echo Carbon::now()->yesterday().'<br>';
+
+});
+
+//Accessors (auto formated data when get from user model eg: getNameAttribute function getXxxAttribute)
+Route::get('/getname', function () {
+    
+    $user = User::findOrFail(1);
+
+    echo $user->name; //name is formated
+
+});
+
+//Mutators (auto formated data before store in user model eg: setNameAttribute function setXxxAttribute)
+Route::get('/setname', function () {
+    
+    //name is formated and store in DB
+    User::create([
+        'name' => 'William', 
+        'email' => 'william@email.com',
+        'password' => 123,
+    ]);
+
+});
 
 /*
 |--------------------------------------------------------------------------
