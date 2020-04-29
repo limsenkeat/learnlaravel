@@ -49,11 +49,22 @@ class PostsController extends Controller
         // Post::create($request->all());
 
         //methond 2
-        $post = new Post;
-        $post->title = $request->title;
-        $post->save();
+        // $post = new Post;
+        // $post->title = $request->title;
+        // $post->save();
 
-        return redirect('/posts');
+        $input = $request->all();
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $name = $file->getClientOriginalName();
+            $file->move('images', $name);
+            $input['path'] = $name;
+        }
+
+        Post::create($input);
+
+        // return redirect('/posts');
     }
 
     /**

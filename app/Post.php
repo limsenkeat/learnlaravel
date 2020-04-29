@@ -12,11 +12,14 @@ class Post extends Model
     // protected $table = 'posts';
 
     protected $dates = ['deleted_at'];
+
+    public $directory = "/images/";
     
     //create data with mass assign, make column safe to create (Route::get('/create')
     protected $fillable = [
         'title',
         'content',
+        'path'
     ];
 
     public function user(){
@@ -39,5 +42,10 @@ class Post extends Model
     public function scopeIdFirst($query){
 
         return $query->orderBy('id', 'asc');
+    }
+    
+    public function getPathAttribute($value){
+
+        return $this->directory . $value;
     }
 }

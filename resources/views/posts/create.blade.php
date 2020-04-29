@@ -10,12 +10,18 @@
     <input type="submit" value="Submit">
 </form> -->
 
-{!! Form::open(['method' => 'POST', 'action' => 'PostsController@store']) !!}
+{!! Form::open(['method' => 'POST', 'action' => 'PostsController@store', 'files' => true]) !!}
     @csrf
     <div class="form-group">
         {!! Form::label('title', 'Title: ') !!}
         {!! Form::text('title', null, ['class' => 'form-control']) !!}
         @error('title')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="form-group">
+        {!! Form::file('file', ['class' => 'form-control']) !!}
+        @error('file')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
     </div>
