@@ -64,7 +64,7 @@ class PostsController extends Controller
 
         Post::create($input);
 
-        // return redirect('/posts');
+        return redirect('/posts');
     }
 
     /**
