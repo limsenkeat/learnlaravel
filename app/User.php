@@ -77,4 +77,16 @@ class User extends Authenticatable
 
         $this->attributes['name'] =  strtoupper($value);
     }
+
+    public function isAdmin(){
+        
+        if($this->roles){
+            foreach($this->roles as $role){
+                if($role->id == 1){ //administrator
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

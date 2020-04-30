@@ -82,6 +82,14 @@ Route::get('/setname', function () {
 
 });
 
+//middleware
+Route::get('/admin/user/roles', ['middleware' => 'role', function () {
+    
+    return "";
+
+}]);
+Route::get('/admin', 'AdminController@index');
+
 /*
 |--------------------------------------------------------------------------
 | SQL CRUD
