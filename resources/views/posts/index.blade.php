@@ -10,5 +10,5 @@
     <li><a href="{{route('posts.show', $post->id)}}">{{$post->title}}</a></li>
 @endforeach
 </ul>
-
+<x-alert type="error" :message="route('posts.create')"/>
 @endsection
